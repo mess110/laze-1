@@ -1,0 +1,17 @@
+{
+    "auth": [
+        {
+            "user": "email@com",
+            "pass": "passw0rd"
+        }
+    ],
+    "cards": [
+        {
+            "number": "1234",
+            "name": "email com",
+            "expMonth": "1",
+            "expYear": "2000",
+            "ccv": "000"
+        }
+    ]
+}

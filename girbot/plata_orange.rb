@@ -13,8 +13,24 @@ class PlataOrange < Girbot::Step
 
     goto "https://www.orange.ro/myaccount/invoice/payment-step-one"
 
+    click(:a, id: 'initializePayment')
+
+    append_to_textfield(options[:details][:card][:number], name: 'ccnumber')
+
+    year_month = '%02d' % options[:details][:card][:expMonth] + options[:details][:card][:expYear]
+    append_to_textfield(year_month, name: 'ccexp')
+
+    append_to_textfield(options[:details][:card][:ccv], name: 'cardCvv')
+
+    click(:a, class: 'pay-button')
+
+    auth_code = wait_for_sms
+    puts "Received #{auth_code}"
+    text_in_textfield(auth_code, id: 'smsCode')
+    click(:button, type: 'submit')
+
     loop do
-      sleep 1
+      sleep 30
     end
   end
 end

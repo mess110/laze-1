@@ -3,12 +3,12 @@ require "girbot"
 
 class PlataElectrica < Girbot::Step
   def action options = {}
-    validate_auth(options)
-    validate_card(options)
+    auth = validate_auth(options)
+    card = validate_card(options)
 
     goto 'https://myelectrica.ro/index.php?pagina=login'
-    text_in_textfield(options[:details][:auth][:user], id: 'myelectrica_utilizator')
-    text_in_textfield(options[:details][:auth][:pass], id: 'myelectrica_pass')
+    text_in_textfield(auth[:user], id: 'myelectrica_utilizator')
+    text_in_textfield(auth[:pass], id: 'myelectrica_pass')
     sleep 1
     click(:button, id: 'myelectrica_login_btn')
 
@@ -19,14 +19,13 @@ class PlataElectrica < Girbot::Step
     sleep 1
     click(:button, id: 'requestMobilPay')
 
-    text_in_textfield(options[:details][:card][:number], id: 'paymentCardNumber')
-    text_in_textfield(options[:details][:card][:name], id: 'paymentCardName')
+    text_in_textfield(card[:number], id: 'paymentCardNumber')
+    text_in_textfield(card[:name], id: 'paymentCardName')
     exec_js("document.getElementById('paymentExpMonth').style.opacity='1';")
-    select_value(options[:details][:card][:expMonth], id: 'paymentExpMonth')
+    select_value(card[:expMonth], id: 'paymentExpMonth')
     exec_js("document.getElementById('paymentExpYear').style.opacity='1';")
-    select_value(options[:details][:card][:expYear], id: 'paymentExpYear')
-    text_in_textfield(options[:details][:card][:ccv], id: 'paymentCVV2Number')
-
+    select_value(card[:expYear], id: 'paymentExpYear')
+    text_in_textfield(card[:ccv], id: 'paymentCVV2Number')
     click(:button, type: 'submit')
 
     auth_code = wait_for_sms

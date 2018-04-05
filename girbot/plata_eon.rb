@@ -3,12 +3,12 @@ require "girbot"
 
 class PlataEon < Girbot::Step
   def action options = {}
-    validate_auth(options)
-    validate_card(options)
+    auth = validate_auth(options)
+    card = validate_card(options)
 
     goto 'https://myline-eon.ro/login'
-    text_in_textfield(options[:details][:auth][:user], id: 'username')
-    text_in_textfield(options[:details][:auth][:pass], id: 'password')
+    text_in_textfield(auth[:user], id: 'username')
+    text_in_textfield(auth[:pass], id: 'password')
     sleep 1
     click(:button, type: 'submit')
 
@@ -17,12 +17,11 @@ class PlataEon < Girbot::Step
     click(:button, class: 'js-pay-btn')
     click(:button, type: 'submit')
 
-    text_in_textfield(options[:details][:card][:number], id: 'creditcard')
-    text_in_textfield(options[:details][:card][:name], id: 'cardnameon')
-    text_in_textfield(options[:details][:card][:ccv], id: 'cardsecurecode')
-    select_value('%02d' % options[:details][:card][:expMonth], id: 'cardmonth')
-    select_value(options[:details][:card][:expYear][2...4], id: 'cardyear')
-
+    text_in_textfield(card[:number], id: 'creditcard')
+    text_in_textfield(card[:name], id: 'cardnameon')
+    text_in_textfield(card[:ccv], id: 'cardsecurecode')
+    select_value('%02d' % card[:expMonth], id: 'cardmonth')
+    select_value(card[:expYear][2...4], id: 'cardyear')
     click(:button, type: 'submit')
 
     auth_code = wait_for_sms

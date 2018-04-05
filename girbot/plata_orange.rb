@@ -26,8 +26,9 @@ class PlataOrange < Girbot::Step
 
     auth_code = wait_for_sms
     puts "Received #{auth_code}"
-    text_in_textfield(auth_code, id: 'smsCode')
-    click(:button, type: 'submit')
+    # NOTE: not tested yet
+    append_to_textfield(auth_code, id: 'psw_id')
+    click(:button, id: 'btnSubmit')
 
     loop do
       sleep 30

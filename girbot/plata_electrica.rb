@@ -21,9 +21,9 @@ class PlataElectrica < Girbot::Step
 
     text_in_textfield(options[:details][:card][:number], id: 'paymentCardNumber')
     text_in_textfield(options[:details][:card][:name], id: 'paymentCardName')
-    browser.execute_script("document.getElementById('paymentExpMonth').style.opacity='1';")
+    exec_js("document.getElementById('paymentExpMonth').style.opacity='1';")
     select_value(options[:details][:card][:expMonth], id: 'paymentExpMonth')
-    browser.execute_script("document.getElementById('paymentExpYear').style.opacity='1';")
+    exec_js("document.getElementById('paymentExpYear').style.opacity='1';")
     select_value(options[:details][:card][:expYear], id: 'paymentExpYear')
     text_in_textfield(options[:details][:card][:ccv], id: 'paymentCVV2Number')
 
@@ -31,8 +31,9 @@ class PlataElectrica < Girbot::Step
 
     auth_code = wait_for_sms
     puts "Received #{auth_code}"
-    text_in_textfield(auth_code, id: 'smsCode')
-    click(:button, type: 'submit')
+    # NOTE: not tested yet
+    append_to_textfield(auth_code, id: 'psw_id')
+    click(:button, id: 'btnSubmit')
 
     loop do
       sleep 30

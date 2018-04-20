@@ -10,7 +10,7 @@ sudo usermod -a -G dialout yourUsername
 sudo reboot
 ```
 
-Print the [https://www.thingiverse.com/thing:2806324](Universal "Button pusher" SG90),
+Print the [https://www.thingiverse.com/thing:2806324](Universal Button pusher for SG90),
 connect the data line from the servo to pin **9**.
 
 To trigger a press, run the `press` script. It handles mutex.
@@ -18,5 +18,5 @@ To trigger a press, run the `press` script. It handles mutex.
 ```shell
 ./press # default 90 140
 
-./press 90 140
+./press 0 90
 ```

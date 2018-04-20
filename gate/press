@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+exec 9>/tmp/gate_opener_press.lock
+if ! flock -n 9  ; then
+  echo "another instance is running";
+  exit 1
+fi
+
+if [ ! -d "node_modules" ]; then
+  node --version
+  npm --version
+  npm install
+fi
+
+node press.js $1 $2

@@ -1,0 +1,10 @@
+{
+  "name": "gate",
+  "version": "1.0.0",
+  "description": "gate opener",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firmata": "^0.19.1"
+  }
+}

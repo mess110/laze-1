@@ -11,7 +11,7 @@ sudo reboot
 ```
 
 Print the [https://www.thingiverse.com/thing:2806324](Universal "Button pusher" SG90),
-connect the data line from the servo to pin *9*.
+connect the data line from the servo to pin **9**.
 
 To trigger a press, run the `press` script. It handles mutex.
 

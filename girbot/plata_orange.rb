@@ -24,7 +24,7 @@ class PlataOrange < Girbot::Step
     puts "Received #{auth_code}"
     # NOTE: not tested yet
     append_to_textfield(auth_code, id: 'psw_id')
-    click(:button, id: 'btnSubmit')
+    click(:input, id: 'btnSubmit')
 
     loop do
       sleep 30

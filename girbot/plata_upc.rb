@@ -29,7 +29,7 @@ class PlataUpc < Girbot::Step
     auth_code = wait_for_sms
     puts "Received #{auth_code}"
     append_to_textfield(auth_code, id: 'psw_id')
-    click(:button, id: 'btnSubmit')
+    click(:input, id: 'btnSubmit')
 
     loop do
       sleep 30

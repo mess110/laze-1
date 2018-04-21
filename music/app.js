@@ -4,27 +4,45 @@ const exec = require('child_process').exec
 
 const port = 3000
 
-const requestHandler = (request, response) => {
-  const url_parts = url.parse(request.url, true)
-  const query = url_parts.query
-  if (query.cmd === undefined || query.cmd === null) {
-    response.end('missing cmd param')
-    return
-  }
-  const cmd = query.cmd
-
-  const child = exec(cmd, function (error, stdout, stderr) {
+const execute = (cmd, callback) => {
+  const child = exec(cmd, (error, stdout, stderr) => {
     const hash = {
       stdout: stdout,
       stderr: stderr,
-      execerror: null
+      execerr: null
     }
     if (error !== null) {
-      hash.execerror = error
+      hash.execerr = error
     }
+    callback(hash)
+  })
+}
 
-    response.end(JSON.stringify(hash))
-  });
+const requestHandler = (request, response) => {
+  const url_parts = url.parse(request.url, true)
+  const query = url_parts.query
+  if (query.cmd) {
+    execute(query.cmd, (hash) => {
+      response.end(JSON.stringify(hash))
+    })
+  } else if (query.say) {
+    const lang = query.lang ? query.lang : 'en'
+    const volume = query.volume ? query.volume : 50
+    const cmd = "./tts " + lang + " " + volume + " \"" + query.say + "\""
+    execute(cmd, (hash) => {
+      response.end(JSON.stringify(hash))
+    })
+  } else if (query.press) {
+    const cmd = "cd ../gate && ./press"
+    execute(cmd, (hash) => {
+      response.end(JSON.stringify(hash))
+    })
+  } else {
+    response.end(JSON.stringify({
+      say: "also takes optional lang and volume params",
+      cmd: "executes shell"
+    }))
+  }
 }
 
 const server = http.createServer(requestHandler)

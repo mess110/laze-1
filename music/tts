@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# ./tts ro 100 salutare lume
+# ./tts en 50 hello world
+
+say() { /usr/bin/mplayer -ao alsa -volume ${2} -noconsolecontrols "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=`echo ${@:3}`&tl=${1}"; }
+say $*

@@ -74,7 +74,9 @@ const requestHandler = (request, response) => {
         from: DEFAULT_FROM,
         to: DEFAULT_TO
       },
-      radio: {},
+      radio: {
+        url: DEFAULT_RADIO
+      },
       kill: {},
       cmd: {}
     }))

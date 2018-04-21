@@ -6,6 +6,9 @@ if ! flock -n 9  ; then
   exit 1
 fi
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 if [ ! -d "node_modules" ]; then
   node --version
   npm --version

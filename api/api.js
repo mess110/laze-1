@@ -56,11 +56,11 @@ const requestHandler = (request, response) => {
       say: {
         volume: DEFAULT_VOLUME,
         lang: DEFAULT_LANG
-      }
+      },
       press: {
         from: DEFAULT_FROM,
         to: DEFAULT_TO
-      }
+      },
       cmd: {}
     }))
   }

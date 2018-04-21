@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 exec 9>/tmp/laze_1_press.lock
 if ! flock -n 9  ; then

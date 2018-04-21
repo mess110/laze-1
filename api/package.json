@@ -1,7 +1,7 @@
 {
-  "name": "gate",
+  "name": "api",
   "version": "1.0.0",
-  "description": "gate opener",
+  "description": "api",
   "author": "",
   "license": "ISC",
   "dependencies": {

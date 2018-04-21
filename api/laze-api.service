@@ -1,12 +1,12 @@
 [Unit]
-Description=laze-music
+Description=laze-api
 After=network.target
 
 [Service]
 Environment=NODE_PORT=3000
 Type=simple
 User=pi
-ExecStart=/home/pi/.nvm/versions/node/v8.11.1/bin/node /home/pi/laze-1/music/app.js
+ExecStart=/home/pi/.nvm/versions/node/v8.11.1/bin/node /home/pi/laze-1/api/api.js
 Restart=on-failure
 
 [Install]

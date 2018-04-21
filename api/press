@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-exec 9>/tmp/gate_opener_press.lock
+exec 9>/tmp/laze_1_press.lock
 if ! flock -n 9  ; then
-  echo "another instance is running";
+  echo "another press instance is running";
   exit 1
 fi
 

@@ -3,6 +3,10 @@ const url = require('url')
 const exec = require('child_process').exec
 
 const port = 3000
+const DEFAULT_VOLUME = 50
+const DEFAULT_LANG = 'en'
+const DEFAULT_FROM = 90
+const DEFAULT_TO = 140
 
 const execute = (cmd, callback) => {
   const child = exec(cmd, (error, stdout, stderr) => {
@@ -27,23 +31,37 @@ const executeShowResponse = (cmd, response) => {
 const requestHandler = (request, response) => {
   const url_parts = url.parse(request.url, true)
   const query = url_parts.query
+
   if (query.cmd) {
+
     executeShowResponse(query.cmd, response)
+
   } else if (query.say) {
-    const lang = query.lang ? query.lang : 'en'
-    const volume = query.volume ? query.volume : 50
+
+    const lang = query.lang ? query.lang : DEFAULT_LANG
+    const volume = query.volume ? query.volume : DEFAULT_VOLUME
     const cmd = __dirname + "/tts " + lang + " " + volume + " \"" + query.say + "\""
     executeShowResponse(cmd, response)
+
   } else if (query.press) {
-    const from = query.from ? query.from : 90
-    const to = query.to ? query.to : 140
-    const cmd = "cd " + __dirname + "/../gate && ./press " + from + " " + to
+
+    const from = query.from ? query.from : DEFAULT_FROM
+    const to = query.to ? query.to : DEFAULT_TO
+    const cmd = "cd " + __dirname + " && ./press " + from + " " + to
     executeShowResponse(cmd, response)
+
   } else {
+
     response.end(JSON.stringify({
-      say: "also takes optional lang and volume params",
-      press: "also takes optional from and to params",
-      cmd: "executes shell"
+      say: {
+        volume: DEFAULT_VOLUME,
+        lang: DEFAULT_LANG
+      }
+      press: {
+        from: DEFAULT_FROM,
+        to: DEFAULT_TO
+      }
+      cmd: {}
     }))
   }
 }

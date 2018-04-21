@@ -1,5 +1,7 @@
 # gate
 
+Move `laze-music.service` to `/etc/systemd/system/laze-music.service`
+
 Press a button from node.js using Arduino with the `firmata` protocol.
 
 Add your user to the `dialout` group so you can connect to the Arduino. You will

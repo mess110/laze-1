@@ -1,5 +1,11 @@
 #!/bin/bash
 
+exec 9>/tmp/laze_1_tts.lock
+if ! flock -n 9  ; then
+  echo "another tts instance is running";
+  exit 1
+fi
+
 # ./tts ro 100 salutare lume
 # ./tts en 50 hello world
 

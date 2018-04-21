@@ -8,7 +8,7 @@ sudo apt-get autoremove
 sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2C0D3C0F
 sudo wget http://goo.gl/vewCLL -O /etc/apt/sources.list.d/rpimonitor.list
 
-sudo apt-get install -y vim dirmngr git rpimonitor
+sudo apt-get install -y vim dirmngr git rpimonitor youtube-dl mplayer omxplayer
 
 # setup nodejs
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash

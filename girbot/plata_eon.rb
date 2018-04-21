@@ -12,6 +12,8 @@ class PlataEon < Girbot::Step
     sleep 1
     click(:button, type: 'submit')
 
+    # click ok alert
+    # fullscreen
     goto 'https://myline-eon.ro/facturile-mele'
     sleep 1
     click(:button, class: 'js-pay-btn')

@@ -67,18 +67,33 @@ const requestHandler = (request, response) => {
 
     response.end(JSON.stringify({
       say: {
-        volume: DEFAULT_VOLUME,
-        lang: DEFAULT_LANG
+        params: {
+          volume: DEFAULT_VOLUME,
+          lang: DEFAULT_LANG
+        },
+        example: "/?say=hello world&lang=" + DEFAULT_LANG + "&volume=" + DEFAULT_VOLUME
       },
       press: {
-        from: DEFAULT_FROM,
-        to: DEFAULT_TO
+        params: {
+          from: DEFAULT_FROM,
+          to: DEFAULT_TO
+        },
+        example: "/?press=yes&from=" + DEFAULT_FROM + "&to=" + DEFAULT_TO
       },
       radio: {
-        url: DEFAULT_RADIO
+        params: {
+          url: DEFAULT_RADIO
+        },
+        example: "/?radio=yes&url=" + DEFAULT_RADIO
       },
-      kill: {},
-      cmd: {}
+      kill: {
+        params: {},
+        example: "/?kill=mplayer"
+      },
+      cmd: {
+        params: {},
+        example: "/?cmd=whoami"
+      }
     }))
   }
 }

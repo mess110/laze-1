@@ -18,28 +18,31 @@ const execute = (cmd, callback) => {
   })
 }
 
+const executeShowResponse = (cmd, response) => {
+  execute(cmd, (hash) => {
+    response.end(JSON.stringify(hash))
+  })
+}
+
 const requestHandler = (request, response) => {
   const url_parts = url.parse(request.url, true)
   const query = url_parts.query
   if (query.cmd) {
-    execute(query.cmd, (hash) => {
-      response.end(JSON.stringify(hash))
-    })
+    executeShowResponse(query.cmd, response)
   } else if (query.say) {
     const lang = query.lang ? query.lang : 'en'
     const volume = query.volume ? query.volume : 50
-    const cmd = "./tts " + lang + " " + volume + " \"" + query.say + "\""
-    execute(cmd, (hash) => {
-      response.end(JSON.stringify(hash))
-    })
+    const cmd = __dirname + "/tts " + lang + " " + volume + " \"" + query.say + "\""
+    executeShowResponse(cmd, response)
   } else if (query.press) {
-    const cmd = "cd ../gate && ./press"
-    execute(cmd, (hash) => {
-      response.end(JSON.stringify(hash))
-    })
+    const from = query.from ? query.from : 90
+    const to = query.to ? query.to : 140
+    const cmd = "cd " + __dirname + "/../gate && ./press " + from + " " + to
+    executeShowResponse(cmd, response)
   } else {
     response.end(JSON.stringify({
       say: "also takes optional lang and volume params",
+      press: "also takes optional from and to params",
       cmd: "executes shell"
     }))
   }

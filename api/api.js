@@ -7,6 +7,7 @@ const DEFAULT_VOLUME = 50
 const DEFAULT_LANG = 'en'
 const DEFAULT_FROM = 90
 const DEFAULT_TO = 140
+const DEFAULT_RADIO = 'http://80.86.106.143:9128/rockfm.aacp'
 
 const execute = (cmd, callback) => {
   const child = exec(cmd, (error, stdout, stderr) => {
@@ -43,6 +44,18 @@ const requestHandler = (request, response) => {
     const cmd = __dirname + "/tts " + lang + " " + volume + " \"" + query.say + "\""
     executeShowResponse(cmd, response)
 
+  } else if (query.radio) {
+
+    const url = query.url ? query.url : DEFAULT_RADIO
+    // https://www.linuxquestions.org/questions/linux-newbie-8/how-to-run-mplayer-in-background-with-command-line-879090/#post4348528
+    const cmd = "killall -9 mplayer || echo 'mplayer was not running.' && mplayer '" + url + "' </dev/null >/dev/null 2>&1 &"
+    executeShowResponse(cmd, response)
+
+  } else if (query.kill) {
+
+    const cmd = "killall -9 " + query.kill
+    executeShowResponse(cmd, response)
+
   } else if (query.press) {
 
     const from = query.from ? query.from : DEFAULT_FROM
@@ -61,6 +74,8 @@ const requestHandler = (request, response) => {
         from: DEFAULT_FROM,
         to: DEFAULT_TO
       },
+      radio: {},
+      kill: {},
       cmd: {}
     }))
   }

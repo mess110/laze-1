@@ -9,9 +9,12 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var workerEditText: EditText
+    private lateinit var progressText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         workerEditText = findViewById(R.id.worker_endpoint)
         workerEditText.setText(getWorkerEndpoint(baseContext))
+        progressText = findViewById(R.id.progress)
 
         val saveButton = findViewById<Button>(R.id.save)
         saveButton.setOnClickListener {
@@ -51,15 +56,36 @@ class MainActivity : AppCompatActivity() {
         manualButton.setOnClickListener {
             manualToggle()
         }
-        manualToggle()
 
         android.os.Handler().postDelayed({
             Log.d("tag", "auto closing activity")
             finish()
         },30 * 1000)
+
+        manualToggle()
     }
 
     private fun manualToggle() {
+            Timer().scheduleAtFixedRate(object : TimerTask() {
+                private var count: Int = 21
+
+                override fun run() {
+                    runOnUiThread {
+                        progressText.text = count.toString()
+                        if (count == 0) {
+                            progressText.visibility = View.INVISIBLE
+                        } else {
+                            progressText.visibility = View.VISIBLE
+                        }
+                    }
+                    count -= 1
+                    if (count == 0) {
+                        cancel()
+                    }
+                }
+            }, 0, 1000)
+
+
         ApiCallTask().execute(workerEditText.text.toString() + "?press=yes")
     }
 

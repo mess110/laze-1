@@ -13,43 +13,66 @@ import android.widget.EditText
 import android.widget.Toast
 
 
+
 class MainActivity : AppCompatActivity() {
 
     companion object {
         const val name = "laze"
         private const val mode = 0
-        const val endpoint = "endpoint"
-        private const val defaultEndpoint = "http://192.168.0.10:4125/"
+        const val girbotPrefKey = "girbotPrefKey"
+        const val workerPrefKey = "workerPrefKey"
+        private const val defaultGirbotEndpoint = "http://192.168.0.10:4125/"
+        private const val defaultWorkerEndpoint = "http://192.168.0.90:3000/"
 
         fun getSettings(context: Context): SharedPreferences {
             return context.getSharedPreferences(name, mode)
         }
 
-        fun getEndpoint(context: Context): String {
+        fun getWorkerEndpoint(context: Context): String {
             val prefs = getSettings(context)
-            return prefs.getString(MainActivity.endpoint, MainActivity.defaultEndpoint)
+            return prefs.getString(MainActivity.workerPrefKey, MainActivity.defaultWorkerEndpoint)
+        }
+
+        fun getGirbotEndpoint(context: Context): String {
+            val prefs = getSettings(context)
+            return prefs.getString(MainActivity.girbotPrefKey, MainActivity.defaultGirbotEndpoint)
         }
     }
+
+    private lateinit var girbotEditText: EditText
+    private lateinit var workerEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkAndRequestPermissions()
 
-        val urlEndpoint = findViewById<EditText>(R.id.endpoint)
-        urlEndpoint.setText(getEndpoint(baseContext))
+        girbotEditText = findViewById(R.id.girbot_endpoint)
+        girbotEditText.setText(getGirbotEndpoint(baseContext))
+
+        workerEditText = findViewById(R.id.worker_endpoint)
+        workerEditText.setText(getWorkerEndpoint(baseContext))
 
         val saveButton = findViewById<Button>(R.id.save)
         saveButton.setOnClickListener {
             saveSettings()
         }
+
+        val voiceButton = findViewById<Button>(R.id.voice)
+        voiceButton.setOnClickListener {
+            startVoiceRecognitionActivity()
+        }
     }
+
+    private fun startVoiceRecognitionActivity() {
+    }
+
 
     private fun saveSettings() {
         val prefs = getSettings(baseContext)
         val preferenceEditorUnique = prefs.edit()
-        val urlEndpoint = findViewById<EditText>(R.id.endpoint)
-        preferenceEditorUnique.putString(endpoint, urlEndpoint.text.toString())
+        preferenceEditorUnique.putString(girbotPrefKey, girbotEditText.text.toString())
+        preferenceEditorUnique.putString(workerPrefKey, workerEditText.text.toString())
         preferenceEditorUnique.apply()
         Toast.makeText(baseContext,"saved", Toast.LENGTH_LONG).show()
     }

@@ -27,7 +27,7 @@ class SmsReceiver : BroadcastReceiver() {
                 if (msg.messageBody.contains("BCR") && msg.messageBody.contains("3-D Secure")) {
                     val words = msg.messageBody.split(' ')
                     val authCode = words[words.size - 1]
-                    val endpoint = MainActivity.getEndpoint(context)
+                    val endpoint = MainActivity.getGirbotEndpoint(context)
                     val url = endpoint + "sms?authCode=" + authCode
 
                     Toast.makeText(context, "Forwarding SMS", Toast.LENGTH_LONG).show()

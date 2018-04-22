@@ -1,4 +1,4 @@
-package ro.northpole.laze
+package ro.northpole.thegate
 
 import android.os.AsyncTask
 import android.util.Log
@@ -7,7 +7,7 @@ import okhttp3.Request
 import okhttp3.Response
 import java.net.SocketTimeoutException
 
-class SmsProxyTask : AsyncTask<String, Void, String>() {
+class ApiCallTask : AsyncTask<String, Void, String>() {
 
     override fun doInBackground(vararg uri: String): String? {
         var result = ""

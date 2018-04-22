@@ -67,7 +67,20 @@ class MainActivity : AppCompatActivity() {
         speechRecognizer.setRecognitionListener(object : RecognitionListenerAdapter() {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                Toast.makeText(baseContext, matches!![0], Toast.LENGTH_LONG).show()
+                val output = matches!![0].toLowerCase()
+                Toast.makeText(baseContext, output, Toast.LENGTH_LONG).show()
+                if (output == "start the radio") {
+                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?radio=yes&volume=100")
+                }
+                if (output == "start the radio silently") {
+                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?radio=yes&volume=100")
+                }
+                if (output == "stop the radio") {
+                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?kill=mplayer")
+                }
+                if (output == "open the garage door" || output == "close the garage door") {
+                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?press=yes")
+                }
             }
         })
 
@@ -120,5 +133,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         speechRecognizer.destroy()
         super.onDestroy()
+    }
+
+    override fun onPause() {
+        //speechRecognizer.destroy()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        startVoiceRecognitionActivity()
+        super.onResume()
     }
 }

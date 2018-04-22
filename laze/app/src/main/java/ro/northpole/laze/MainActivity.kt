@@ -2,27 +2,25 @@ package ro.northpole.laze
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import android.speech.SpeechRecognizer
-import android.view.View
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter
-import com.github.zagum.speechrecognitionview.RecognitionProgressView
-import android.speech.RecognizerIntent
-import android.content.Intent
 
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val name = "laze"
+        const val name = "lazy"
         private const val mode = 0
         const val girbotPrefKey = "girbotPrefKey"
         const val workerPrefKey = "workerPrefKey"
@@ -66,10 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(baseContext)
-
-        val recognitionProgressView = findViewById<View>(R.id.recognition_view) as RecognitionProgressView
-        recognitionProgressView.setSpeechRecognizer(speechRecognizer)
-        recognitionProgressView.setRecognitionListener(object : RecognitionListenerAdapter() {
+        speechRecognizer.setRecognitionListener(object : RecognitionListenerAdapter() {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 Toast.makeText(baseContext, matches!![0], Toast.LENGTH_LONG).show()
@@ -80,6 +75,8 @@ class MainActivity : AppCompatActivity() {
         voiceButton.setOnClickListener {
             startVoiceRecognitionActivity()
         }
+
+        startVoiceRecognitionActivity()
     }
 
     private fun startVoiceRecognitionActivity() {
@@ -118,5 +115,10 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    override fun onDestroy() {
+        speechRecognizer.destroy()
+        super.onDestroy()
     }
 }

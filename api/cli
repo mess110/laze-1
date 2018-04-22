@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]
+then
+  cat << EOF
+EOF
+  curl -s "http://localhost:3000/" | python -m json.tool
+  exit 0
+fi
+
+curl -s "http://localhost:3000$*" | python -m json.tool

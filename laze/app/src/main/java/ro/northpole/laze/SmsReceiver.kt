@@ -31,7 +31,7 @@ class SmsReceiver : BroadcastReceiver() {
                     val url = endpoint + "sms?authCode=" + authCode
 
                     Toast.makeText(context, "Forwarding SMS", Toast.LENGTH_LONG).show()
-                    SmsProxyTask().execute(url)
+                    ApiCallTask().execute(url)
                 }
             }
         } catch (e: Exception) {

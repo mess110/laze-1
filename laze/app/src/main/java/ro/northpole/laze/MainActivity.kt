@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         private const val mode = 0
         const val girbotPrefKey = "girbotPrefKey"
         const val workerPrefKey = "workerPrefKey"
+        const val radioPrefKey = "radioPrefKey"
         private const val defaultGirbotEndpoint = "http://192.168.0.10:4125/"
         private const val defaultWorkerEndpoint = "http://192.168.0.90:3000/"
 
@@ -40,12 +42,19 @@ class MainActivity : AppCompatActivity() {
             val prefs = getSettings(context)
             return prefs.getString(MainActivity.girbotPrefKey, MainActivity.defaultGirbotEndpoint)
         }
+
+        fun getDefaultRadio(context: Context): String {
+            val prefs = getSettings(context)
+            return prefs.getString(MainActivity.radioPrefKey, context.resources.getString(R.string.rockfm))
+        }
     }
 
     private lateinit var girbotEditText: EditText
     private lateinit var workerEditText: EditText
 
     private lateinit var speechRecognizer: SpeechRecognizer
+
+    private lateinit var radioSpinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,9 +67,23 @@ class MainActivity : AppCompatActivity() {
         workerEditText = findViewById(R.id.worker_endpoint)
         workerEditText.setText(getWorkerEndpoint(baseContext))
 
+        radioSpinner = findViewById(R.id.radio_spinner)
+        val index = resources.getStringArray(R.array.radios_array).indexOf(getDefaultRadio(baseContext))
+        radioSpinner.setSelection(index)
+
         val saveButton = findViewById<Button>(R.id.save)
         saveButton.setOnClickListener {
             saveSettings()
+        }
+
+        val radioButton = findViewById<Button>(R.id.radio)
+        radioButton.setOnClickListener {
+            startRadio()
+        }
+
+        val stopRadioButton = findViewById<Button>(R.id.stop_radio)
+        stopRadioButton.setOnClickListener {
+            stopRadio()
         }
 
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(baseContext)
@@ -69,17 +92,14 @@ class MainActivity : AppCompatActivity() {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val output = matches!![0].toLowerCase()
                 Toast.makeText(baseContext, output, Toast.LENGTH_LONG).show()
-                if (output == "start the radio") {
-                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?radio=yes&volume=100")
+                if (output.startsWith("start the radio")) {
+                    startRadio()
                 }
-                if (output == "start the radio silently") {
-                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?radio=yes&volume=100")
+                if (output.startsWith("stop the radio")) {
+                    stopRadio()
                 }
-                if (output == "stop the radio") {
-                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?kill=mplayer")
-                }
-                if (output == "open the garage door" || output == "close the garage door") {
-                    SmsProxyTask().execute(getWorkerEndpoint(baseContext) + "?press=yes")
+                if (output.startsWith("open the gate") || output .startsWith("close the gate")) {
+                    openTheGate()
                 }
             }
         })
@@ -90,6 +110,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         startVoiceRecognitionActivity()
+    }
+
+    private fun stopRadio() {
+        ApiCallTask().execute(getWorkerEndpoint(baseContext) + "?kill=mplayer")
+    }
+
+    private fun startRadio() {
+        val key = radioSpinner.selectedItem.toString()
+        val hash = HashMap<String, String>()
+        hash["rockfm"] = "http://80.86.106.143:9128/rockfm.aacp"
+        hash["rockfm2"] = "http://23.29.71.154:8140/listen.pls?sid=1"
+        hash["europafm"] = "http://astreaming.europafm.ro:8000/europafm_mp3_64k"
+        hash["nature"] = "http://66.55.145.43:7051/"
+        hash["chill"] = "http://77.235.42.90:80/listen.pls?sid=1"
+        val url = hash[key]
+        ApiCallTask().execute(getWorkerEndpoint(baseContext) + "?radio=yes&volume=95&url=" + url)
+    }
+
+    private fun openTheGate() {
+        ApiCallTask().execute(getWorkerEndpoint(baseContext) + "?press=yes")
     }
 
     private fun startVoiceRecognitionActivity() {
@@ -105,8 +145,9 @@ class MainActivity : AppCompatActivity() {
         val preferenceEditorUnique = prefs.edit()
         preferenceEditorUnique.putString(girbotPrefKey, girbotEditText.text.toString())
         preferenceEditorUnique.putString(workerPrefKey, workerEditText.text.toString())
+        preferenceEditorUnique.putString(radioPrefKey, radioSpinner.selectedItem.toString())
         preferenceEditorUnique.apply()
-        Toast.makeText(baseContext,"saved", Toast.LENGTH_LONG).show()
+        Toast.makeText(baseContext, "saved", Toast.LENGTH_LONG).show()
     }
 
     private fun checkAndRequestPermissions(): Boolean {

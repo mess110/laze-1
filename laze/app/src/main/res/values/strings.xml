@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">lazy</string>
+    <string name="rockfm">rockfm</string>
+    <string name="rockfm2">rockfm2</string>
+    <string name="europafm">europafm</string>
+    <string name="nature">nature</string>
+    <string name="chill">chill</string>
+
+    <string-array name="radios_array">
+        <item>@string/rockfm</item>
+        <item>@string/rockfm2</item>
+        <item>@string/europafm</item>
+        <item>@string/nature</item>
+        <item>@string/chill</item>
+    </string-array>
 </resources>

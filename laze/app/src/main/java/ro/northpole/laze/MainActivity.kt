@@ -11,7 +11,12 @@ import android.support.v4.content.ContextCompat
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-
+import android.speech.SpeechRecognizer
+import android.view.View
+import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter
+import com.github.zagum.speechrecognitionview.RecognitionProgressView
+import android.speech.RecognizerIntent
+import android.content.Intent
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,6 +47,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var girbotEditText: EditText
     private lateinit var workerEditText: EditText
 
+    private lateinit var speechRecognizer: SpeechRecognizer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,6 +65,17 @@ class MainActivity : AppCompatActivity() {
             saveSettings()
         }
 
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(baseContext)
+
+        val recognitionProgressView = findViewById<View>(R.id.recognition_view) as RecognitionProgressView
+        recognitionProgressView.setSpeechRecognizer(speechRecognizer)
+        recognitionProgressView.setRecognitionListener(object : RecognitionListenerAdapter() {
+            override fun onResults(results: Bundle?) {
+                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                Toast.makeText(baseContext, matches!![0], Toast.LENGTH_LONG).show()
+            }
+        })
+
         val voiceButton = findViewById<Button>(R.id.voice)
         voiceButton.setOnClickListener {
             startVoiceRecognitionActivity()
@@ -65,6 +83,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startVoiceRecognitionActivity() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, packageName)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        speechRecognizer.startListening(intent)
     }
 
 
@@ -83,6 +105,7 @@ class MainActivity : AppCompatActivity() {
         val allPermissions = ArrayList<String>()
         allPermissions.add(Manifest.permission.RECEIVE_SMS)
         allPermissions.add(Manifest.permission.INTERNET)
+        allPermissions.add(Manifest.permission.RECORD_AUDIO)
 
         allPermissions.forEach { it ->
             if (ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED) {

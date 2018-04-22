@@ -60,30 +60,30 @@ class MainActivity : AppCompatActivity() {
         android.os.Handler().postDelayed({
             Log.d("tag", "auto closing activity")
             finish()
-        },30 * 1000)
+        }, 30 * 1000)
 
         manualToggle()
     }
 
     private fun manualToggle() {
-            Timer().scheduleAtFixedRate(object : TimerTask() {
-                private var count: Int = 21
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            private var count: Int = 21
 
-                override fun run() {
-                    runOnUiThread {
-                        progressText.text = count.toString()
-                        if (count == 0) {
-                            progressText.visibility = View.INVISIBLE
-                        } else {
-                            progressText.visibility = View.VISIBLE
-                        }
-                    }
-                    count -= 1
+            override fun run() {
+                runOnUiThread {
+                    progressText.text = count.toString()
                     if (count == 0) {
-                        cancel()
+                        progressText.visibility = View.INVISIBLE
+                    } else {
+                        progressText.visibility = View.VISIBLE
                     }
                 }
-            }, 0, 1000)
+                count -= 1
+                if (count == 0) {
+                    cancel()
+                }
+            }
+        }, 0, 1000)
 
 
         ApiCallTask().execute(workerEditText.text.toString() + "?press=yes")
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         val preferenceEditorUnique = prefs.edit()
         preferenceEditorUnique.putString(workerPrefKey, workerEditText.text.toString())
         preferenceEditorUnique.apply()
-        Toast.makeText(baseContext,"saved", Toast.LENGTH_LONG).show()
+        Toast.makeText(baseContext, "saved", Toast.LENGTH_LONG).show()
     }
 
     private fun checkAndRequestPermissions(): Boolean {

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+exec 9>/tmp/laze_1_ytmp.lock
+if ! flock -n 9  ; then
+  echo "another ytmp instance is running";
+  exit 1
+fi
+
+# Usage:
+#   ytmp https://www.youtube.com/watch?v=i9TdoO2OVaA
+
+youtube-dl -q -o- "$*" | mplayer -af scaletempo -softvol -softvol-max 400 -cache 8192  -

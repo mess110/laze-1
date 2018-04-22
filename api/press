@@ -6,6 +6,10 @@ if ! flock -n 9  ; then
   exit 1
 fi
 
+# Usage:
+#   ./press
+#   ./press 90 140
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 

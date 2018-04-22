@@ -8,6 +8,7 @@ const DEFAULT_LANG = 'en'
 const DEFAULT_FROM = 90
 const DEFAULT_TO = 140
 const DEFAULT_RADIO = 'http://80.86.106.143:9128/rockfm.aacp'
+const DEFAULT_YOUTUBE = 'https://www.youtube.com/watch?v=i9TdoO2OVaA'
 
 const execute = (cmd, callback) => {
   const child = exec(cmd, (error, stdout, stderr) => {
@@ -47,8 +48,15 @@ const requestHandler = (request, response) => {
   } else if (query.radio) {
 
     const url = query.url ? query.url : DEFAULT_RADIO
+    const volume = query.volume ? query.volume : DEFAULT_VOLUME
     // https://www.linuxquestions.org/questions/linux-newbie-8/how-to-run-mplayer-in-background-with-command-line-879090/#post4348528
-    const cmd = "killall -9 mplayer || echo 'mplayer was not running.' && mplayer '" + url + "' </dev/null >/dev/null 2>&1 &"
+    const cmd = "killall -9 mplayer || echo 'mplayer was not running.' && mplayer -ao alsa -volume " + volume + " '" + url + "' </dev/null >/dev/null 2>&1 &"
+    executeShowResponse(cmd, response)
+
+  } else if (query.youtube) {
+
+    const url = query.url ? query.url : DEFAULT_YOUTUBE
+    const cmd = "cd " + __dirname + " && ./ytmp '" + url + "'"
     executeShowResponse(cmd, response)
 
   } else if (query.kill) {
@@ -91,11 +99,12 @@ const requestHandler = (request, response) => {
       },
       radio: {
         params: {
-          url: DEFAULT_RADIO
+          url: DEFAULT_RADIO,
+          volume: DEFAULT_VOLUME
         },
         examples: [
           "/?radio=yes",
-          "/?radio=yes&url=" + DEFAULT_RADIO
+          "/?radio=yes&url=" + DEFAULT_RADIO + "&volume=50"
         ]
       },
       kill: {

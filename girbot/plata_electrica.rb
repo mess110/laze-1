@@ -1,7 +1,8 @@
-require "bundler/setup"
-require "girbot"
+require './utils'
 
 class PlataElectrica < Girbot::Step
+  include Common
+
   def action options = {}
     auth = validate_auth(options)
     card = validate_card(options)
@@ -28,15 +29,8 @@ class PlataElectrica < Girbot::Step
     text_in_textfield(card[:ccv], id: 'paymentCVV2Number')
     click(:button, type: 'submit')
 
-    auth_code = wait_for_sms
-    puts "Received #{auth_code}"
-    # NOTE: not tested yet
-    append_to_textfield(auth_code, id: 'psw_id')
-    click(:input, id: 'btnSubmit')
-
-    loop do
-      sleep 30
-    end
+    do_sms_validation
+    wait_forever
   end
 end
 

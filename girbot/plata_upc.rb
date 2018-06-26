@@ -1,5 +1,4 @@
-require "bundler/setup"
-require "girbot"
+require './utils'
 
 class PlataUpc < Girbot::Step
   def action options = {}
@@ -26,14 +25,8 @@ class PlataUpc < Girbot::Step
     text_in_textfield(card[:name], id: 'cc_card_holder')
     click(:button, type: 'submit')
 
-    auth_code = wait_for_sms
-    puts "Received #{auth_code}"
-    append_to_textfield(auth_code, id: 'psw_id')
-    click(:input, id: 'btnSubmit')
-
-    loop do
-      sleep 30
-    end
+    do_sms_validation
+    wait_forever
   end
 end
 

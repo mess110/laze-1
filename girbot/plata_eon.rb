@@ -1,5 +1,4 @@
-require "bundler/setup"
-require "girbot"
+require './utils'
 
 class PlataEon < Girbot::Step
   def action options = {}
@@ -26,15 +25,8 @@ class PlataEon < Girbot::Step
     select_value(card[:expYear][2...4], id: 'cardyear')
     click(:button, type: 'submit')
 
-    auth_code = wait_for_sms
-    puts "Received #{auth_code}"
-    # NOTE: not tested yet
-    append_to_textfield(auth_code, id: 'psw_id')
-    click(:input, id: 'btnSubmit')
-
-    loop do
-      sleep 30
-    end
+    do_sms_validation
+    wait_forever
   end
 end
 

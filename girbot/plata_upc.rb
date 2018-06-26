@@ -1,6 +1,8 @@
 require './utils'
 
 class PlataUpc < Girbot::Step
+  include Common
+
   def action options = {}
     auth = validate_auth(options)
     card = validate_card(options)
@@ -32,6 +34,7 @@ end
 
 PlataUpc.run(
   headless: false,
+  maximize: true,
   browser: Girbot::BrowserHolder.new(:chrome, nil),
   details: {
     auth: Girbot::Step.read('../details.json')[:auth][3],

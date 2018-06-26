@@ -15,7 +15,7 @@ class PlataElectrica < Girbot::Step
 
     goto 'https://myelectrica.ro/index.php?pagina=plateste-online'
     sleep 1
-    fire id: 'myelectrica_checkall'
+    fire_event :checkbox, id: 'myelectrica_checkall'
     click(:button, type: 'submit')
     sleep 1
     click(:button, id: 'requestMobilPay')
@@ -36,6 +36,7 @@ end
 
 PlataElectrica.run(
   headless: false,
+  maximize: true,
   browser: Girbot::BrowserHolder.new(:chrome, nil),
   details: {
     auth: Girbot::Step.read('../details.json')[:auth][1],

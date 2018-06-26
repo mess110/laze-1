@@ -1,6 +1,8 @@
 require './utils'
 
 class PlataEon < Girbot::Step
+  include Common
+
   def action options = {}
     auth = validate_auth(options)
     card = validate_card(options)
@@ -12,7 +14,6 @@ class PlataEon < Girbot::Step
     click(:button, type: 'submit')
 
     # click ok alert
-    # fullscreen
     goto 'https://myline-eon.ro/facturile-mele'
     sleep 1
     click(:button, class: 'js-pay-btn')
@@ -32,6 +33,7 @@ end
 
 PlataEon.run(
   headless: false,
+  maximize: true,
   browser: Girbot::BrowserHolder.new(:chrome, nil),
   details: {
     auth: Girbot::Step.read('../details.json')[:auth][0],

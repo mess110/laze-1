@@ -1,4 +1,6 @@
+# Auto Payment System
+
 ```
-gem install bundler
-bundle
+docker build -t girbot .
+docker run -p 4125:4125 girbot
 ```

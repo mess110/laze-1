@@ -1,8 +1,4 @@
-require './utils'
-
 class PlataOrange < Girbot::Step
-  include Common
-
   def action options = {}
     auth = validate_auth(options)
     card = validate_card(options)
@@ -22,16 +18,5 @@ class PlataOrange < Girbot::Step
     click(:a, class: 'pay-button')
 
     do_sms_validation
-    wait_forever
   end
 end
-
-PlataOrange.run(
-  headless: false,
-  maximize: true,
-  browser: Girbot::BrowserHolder.new(:chrome, nil),
-  details: {
-    auth: Girbot::Step.read('../details.json')[:auth][2],
-    card: Girbot::Step.read('../details.json')[:cards][0]
-  }
-)

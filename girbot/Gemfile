@@ -1,3 +1,4 @@
 source :rubygems
 
-gem 'girbot', path: '../../girbot/'
+gem 'girbot', '0.2.0'
+# gem 'girbot', path: '../../girbot/'

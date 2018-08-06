@@ -1,8 +1,4 @@
-require './utils'
-
 class PlataEon < Girbot::Step
-  include Common
-
   def action options = {}
     auth = validate_auth(options)
     card = validate_card(options)
@@ -27,16 +23,5 @@ class PlataEon < Girbot::Step
     click(:button, type: 'submit')
 
     do_sms_validation
-    wait_forever
   end
 end
-
-PlataEon.run(
-  headless: false,
-  maximize: true,
-  browser: Girbot::BrowserHolder.new(:chrome, nil),
-  details: {
-    auth: Girbot::Step.read('../details.json')[:auth][0],
-    card: Girbot::Step.read('../details.json')[:cards][0]
-  }
-)

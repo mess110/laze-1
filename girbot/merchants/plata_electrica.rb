@@ -1,8 +1,4 @@
-require './utils'
-
 class PlataElectrica < Girbot::Step
-  include Common
-
   def action options = {}
     auth = validate_auth(options)
     card = validate_card(options)
@@ -30,16 +26,5 @@ class PlataElectrica < Girbot::Step
     click(:button, type: 'submit')
 
     do_sms_validation
-    wait_forever
   end
 end
-
-PlataElectrica.run(
-  headless: false,
-  maximize: true,
-  browser: Girbot::BrowserHolder.new(:chrome, nil),
-  details: {
-    auth: Girbot::Step.read('../details.json')[:auth][1],
-    card: Girbot::Step.read('../details.json')[:cards][0]
-  }
-)

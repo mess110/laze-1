@@ -24,5 +24,7 @@ class PlataUpc < Girbot::Step
     click(:button, type: 'submit')
 
     do_sms_validation
+
+    screenshot('upc-end')
   end
 end

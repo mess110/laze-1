@@ -23,5 +23,7 @@ class PlataEon < Girbot::Step
     click(:button, type: 'submit')
 
     do_sms_validation
+
+    screenshot('eon-end')
   end
 end

@@ -4,4 +4,4 @@ docker build -t lazy .
 docker run \
   -v `pwd`/screenshots:/app/screenshots \
   -p 4125:4125 \
-  lazy ruby /app/girbot.rb
+  lazy ruby /app/girbot.rb "$@"

@@ -18,5 +18,7 @@ class PlataOrange < Girbot::Step
     click(:a, class: 'pay-button')
 
     do_sms_validation
+
+    screenshot('orange-end')
   end
 end

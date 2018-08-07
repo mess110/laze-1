@@ -73,7 +73,10 @@ class Girbot::Step
   def do_sms_validation_iframe
     auth_code = wait_for_sms
     $logger.info "Received #{auth_code}"
-    append_to_textfield(auth_code, id: 'psw_id')
+    input = browser.iframes[0].text_field(id: 'psw_id')
+    auth_code.chars.each do |c|
+      input.append(c)
+    end
     click(:input, id: 'btnSubmit')
     sleep 10
   end

@@ -17,7 +17,7 @@ class PlataOrange < Girbot::Step
     append_to_textfield(card[:ccv], name: 'cardCvv')
     click(:a, class: 'pay-button')
 
-    do_sms_validation
+    do_sms_validation_iframe
 
     screenshot('orange-end')
   end

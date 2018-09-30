@@ -73,11 +73,12 @@ class Girbot::Step
   def do_sms_validation_iframe
     auth_code = wait_for_sms
     $logger.info "Received #{auth_code}"
-    input = browser.iframes[0].text_field(id: 'psw_id')
+    iframe = browser.iframes[0]
+    input = iframe.text_field(id: 'psw_id')
     auth_code.chars.each do |c|
       input.append(c)
     end
-    click(:input, id: 'btnSubmit')
+    iframe.button(id: 'btnSubmit').click
     sleep 10
   end
 end
@@ -127,6 +128,10 @@ when 'plata_upc'
       auth: details[:auth][3],
       card: details[:cards][0]
     }
+  )
+when 'sandbox'
+  Sandbox.new(nil).action(
+    details: details
   )
 else
   $logger.error('unknown step')

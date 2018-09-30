@@ -19,7 +19,7 @@ Allowed steps: #{$allowed_steps.join(', ')}
 
 Example usage:
 
-  ruby girbot.rb --run=basic_test
+  ruby girbot.rb --run=sandbox
   EOS
 end
 
@@ -99,8 +99,6 @@ details = Girbot::Step.read('details.json')
 
 
 case options[:run]
-when 'basic_test'
-  BasicTest.new(nil).action(details)
 when 'plata_electrica'
   PlataElectrica.new(nil).action(
     details: {

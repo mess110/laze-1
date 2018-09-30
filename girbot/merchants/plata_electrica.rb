@@ -11,21 +11,33 @@ class PlataElectrica < Girbot::Step
 
     goto 'https://myelectrica.ro/index.php?pagina=plateste-online'
     sleep 1
-    fire_event :checkbox, id: 'myelectrica_checkall'
-    click(:button, type: 'submit')
-    sleep 1
-    click(:button, id: 'requestMobilPay')
 
-    text_in_textfield(card[:number], id: 'paymentCardNumber')
-    text_in_textfield(card[:name], id: 'paymentCardName')
-    exec_js("document.getElementById('paymentExpMonth').style.opacity='1';")
-    select_value(card[:expMonth], id: 'paymentExpMonth')
-    exec_js("document.getElementById('paymentExpYear').style.opacity='1';")
-    select_value(card[:expYear], id: 'paymentExpYear')
-    text_in_textfield(card[:ccv], id: 'paymentCVV2Number')
-    click(:button, type: 'submit')
+    # TODO: check this code when a bill exists
+    # if browser.div(class: 'alert-info').exists?
+      # puts browser.divs(class: 'alert-info')[0].p.text
+    # end
 
-    do_sms_validation
+    tbody = browser.tbodys[0]
+    # if there is more than 1 tr it means we have a bill to pay
+    if tbody.trs.size > 1
+      fire_event :checkbox, id: 'myelectrica_checkall'
+      click(:button, type: 'submit')
+      sleep 1
+      click(:button, id: 'requestMobilPay')
+
+      # TODO: print how much we pay
+
+      text_in_textfield(card[:number], id: 'paymentCardNumber')
+      text_in_textfield(card[:name], id: 'paymentCardName')
+      exec_js("document.getElementById('paymentExpMonth').style.opacity='1';")
+      select_value(card[:expMonth], id: 'paymentExpMonth')
+      exec_js("document.getElementById('paymentExpYear').style.opacity='1';")
+      select_value(card[:expYear], id: 'paymentExpYear')
+      text_in_textfield(card[:ccv], id: 'paymentCVV2Number')
+      click(:button, type: 'submit')
+
+      do_sms_validation
+    end
 
     screenshot('electrica-end')
   end

@@ -36,6 +36,6 @@ class PlataEon < Girbot::Step
       do_sms_validation
     end
 
-    screenshot('eon-end')
+    screenshot('eon-end', options[:options][:ui] == true)
   end
 end

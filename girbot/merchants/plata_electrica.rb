@@ -19,7 +19,7 @@ class PlataElectrica < Girbot::Step
 
     tbody = browser.tbodys[0]
     # if there is more than 1 tr it means we have a bill to pay
-    if tbody.trs.size > 1
+    if tbody.exists? && tbody.trs.size > 1
       fire_event :checkbox, id: 'myelectrica_checkall'
       click(:button, type: 'submit')
       sleep 1
@@ -39,6 +39,6 @@ class PlataElectrica < Girbot::Step
       do_sms_validation
     end
 
-    screenshot('electrica-end')
+    screenshot('electrica-end', options[:options][:ui] == true)
   end
 end

@@ -26,6 +26,6 @@ class PlataOrange < Girbot::Step
       do_sms_validation_iframe
     end
 
-    screenshot('orange-end')
+    screenshot('orange-end', options[:options][:ui] == true)
   end
 end

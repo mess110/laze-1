@@ -88,19 +88,15 @@ module Girbot
     def browser
       $browser
     end
-
-    def screenshot(label)
-      browser.screenshot.save "screenshots/screenshot-#{label}-#{Time.now.to_i}.png"
-    end
   end
 end
 
 details = Girbot::Step.read('details.json')
 
-
 case options[:run]
 when 'plata_electrica'
   PlataElectrica.new(nil).action(
+    options: options,
     details: {
       auth: details[:auth][1],
       card: details[:cards][0]
@@ -108,6 +104,7 @@ when 'plata_electrica'
   )
 when 'plata_eon'
   PlataEon.new(nil).action(
+    options: options,
     details: {
       auth: details[:auth][0],
       card: details[:cards][0]
@@ -115,6 +112,7 @@ when 'plata_eon'
   )
 when 'plata_orange'
   PlataOrange.new(nil).action(
+    options: options,
     details: {
       auth: details[:auth][2],
       card: details[:cards][0]
@@ -122,6 +120,7 @@ when 'plata_orange'
   )
 when 'plata_upc'
   PlataUpc.new(nil).action(
+    options: options,
     details: {
       auth: details[:auth][3],
       card: details[:cards][0]
@@ -129,6 +128,7 @@ when 'plata_upc'
   )
 when 'sandbox'
   Sandbox.new(nil).action(
+    options: options,
     details: details
   )
 else

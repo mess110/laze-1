@@ -1,3 +1,4 @@
+# works
 class PlataUpc < Girbot::Step
   def action options = {}
     auth = validate_auth(options)
@@ -31,6 +32,6 @@ class PlataUpc < Girbot::Step
       do_sms_validation
     end
 
-    screenshot('upc-end')
+    screenshot('upc-end', options[:options][:ui] == true)
   end
 end

@@ -14,6 +14,10 @@ girbot uses selenium behind the scenes to automate paying of bills. The
 android application listens for received sms containing the confirmation
 codes and sends them to girbot.
 
+```
+export LAZE_PATH="$HOME/laze-1/girbot"
+```
+
 ### Button presser
 
 open the garage door

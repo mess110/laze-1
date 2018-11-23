@@ -19,7 +19,11 @@ class PlataElectrica < Girbot::Step
 
     tbody = browser.tbodys[0]
     # if there is more than 1 tr it means we have a bill to pay
-    if tbody.exists? && tbody.trs.size > 1
+    # TODO: get the actual amount to pay
+    amount_to_pay = tbody.exists? && tbody.trs.size > 1 ? -1 : 0
+    $logger.info amount_to_pay
+
+    if amount_to_pay != 0
       fire_event :checkbox, id: 'myelectrica_checkall'
       click(:button, type: 'submit')
       sleep 1

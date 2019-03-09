@@ -3,11 +3,18 @@ class PlataEon < Girbot::Step
     auth = validate_auth(options)
     card = validate_card(options)
 
+    $logger.info "Card valid"
+
     goto 'https://myline-eon.ro/login'
+    $logger.info "On login page"
+
     text_in_textfield(auth[:user], id: 'username')
     text_in_textfield(auth[:pass], id: 'password')
+    $logger.info "User and pass inserted"
+
     sleep 1
     click(:button, type: 'submit')
+    $logger.info "login pressed"
 
     # click ok alert
     goto 'https://myline-eon.ro/facturile-mele'

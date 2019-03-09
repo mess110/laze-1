@@ -6,7 +6,12 @@ class PlataOrange < Girbot::Step
     goto 'https://sso.orange.ro/wp/oro?jspname=login.jsp&action=LOGINPAGE_SSO&full_page=true'
     text_in_textfield(auth[:user], id: 'login')
     text_in_textfield(auth[:pass], id: 'password')
+
     click(:button, type: 'submit')
+    # text_in_textfield(auth[:user], id: 'login')
+    # text_in_textfield(auth[:pass], id: 'password')
+    # sleep 120
+    # click(:button, type: 'submit')
 
     goto 'https://www.orange.ro/myaccount/invoice/payment-step-one'
 

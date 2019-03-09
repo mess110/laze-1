@@ -94,14 +94,6 @@ end
 details = Girbot::Step.read('details.json')
 
 case options[:run]
-when 'plata_electrica'
-  PlataElectrica.new(nil).action(
-    options: options,
-    details: {
-      auth: details[:auth][1],
-      card: details[:cards][0]
-    }
-  )
 when 'plata_eon'
   PlataEon.new(nil).action(
     options: options,
@@ -110,11 +102,19 @@ when 'plata_eon'
       card: details[:cards][0]
     }
   )
+when 'plata_electrica'
+  PlataElectrica.new(nil).action(
+    options: options,
+    details: {
+      auth: details[:auth][1],
+      card: details[:cards][0]
+    }
+  )
 when 'plata_orange'
   PlataOrange.new(nil).action(
     options: options,
     details: {
-      auth: details[:auth][2],
+      auth: details[:auth][3],
       card: details[:cards][0]
     }
   )
@@ -122,7 +122,7 @@ when 'plata_upc'
   PlataUpc.new(nil).action(
     options: options,
     details: {
-      auth: details[:auth][3],
+      auth: details[:auth][2],
       card: details[:cards][0]
     }
   )

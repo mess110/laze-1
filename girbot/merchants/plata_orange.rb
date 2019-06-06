@@ -23,8 +23,8 @@ class PlataOrange < Girbot::Step
       click(:a, id: 'initializePayment')
 
       append_to_textfield(card[:number], name: 'ccnumber')
-      year_month = '%02d' % card[:expMonth] + card[:expYear]
-      append_to_textfield(year_month, name: 'ccexp')
+      month_year = '%02d' % card[:expMonth] + card[:expYear][2..4]
+      append_to_textfield(month_year, name: 'ccexp')
       append_to_textfield(card[:ccv], name: 'cardCvv')
       click(:a, class: 'pay-button')
 

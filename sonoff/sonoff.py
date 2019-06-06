@@ -1,28 +1,27 @@
 # https://github.com/lucien2k/sonoff-python/
 
-# The domain of your component. Should be equal to the name of your component.
 import logging, time, hmac, hashlib, random, base64, json, socket, requests, re
-from datetime import timedelta
-
-SCAN_INTERVAL = timedelta(seconds=60)
 
 _LOGGER = logging.getLogger(__name__)
+HTTP_BAD_REQUEST = 400
+HTTP_NOT_FOUND = 404
+HTTP_MOVED_PERMANENTLY = 301
+HTTP_UNAUTHORIZED = 401
 
 def gen_nonce(length=8):
     """Generate pseudorandom number."""
     return ''.join([str(random.randint(0, 9)) for i in range(length)])
 
+class SonoffException(Exception):
+    pass
+
 class Sonoff():
-    # def __init__(self, hass, email, password, api_region, grace_period):
-    def __init__(self, username, password, api_region, user_apikey=None, bearer_token=None, grace_period=600):
+    def __init__(self, username, password, api_region, user_apikey=None, bearer_token=None):
 
         self._username      = username
         self._password      = password
         self._api_region    = api_region
         self._wshost        = None
-
-        self._skipped_login = 0
-        self._grace_period  = timedelta(seconds=grace_period)
 
         self._user_apikey   = user_apikey
         self._bearer_token  = bearer_token
@@ -40,21 +39,14 @@ class Sonoff():
             'Content-Type'  : 'application/json;charset=UTF-8'
         }
 
-        try:
-            # get the websocket host
-            if not self._wshost:
-                self.set_wshost()
+        if not self._wshost:
+            self.set_wshost()
 
-            self.update_devices() # to get the devices list
-        except:
-            self.do_login()
+        self.update_devices()
 
     def do_login(self):
         import uuid
 
-        # reset the grace period
-        self._skipped_login = 0
-        
         app_details = {
             'password'  : self._password,
             'version'   : '6',
@@ -79,7 +71,7 @@ class Sonoff():
             decryptedAppSecret, 
             str.encode(json.dumps(app_details)), 
             digestmod=hashlib.sha256).digest()
-        
+
         sign = base64.b64encode(hex_dig).decode()
 
         self._headers = {
@@ -107,9 +99,8 @@ class Sonoff():
             if '@' not in self._username and self._api_region != 'cn':
                 self._api_region    = 'cn'
                 self.do_login()
-
             else:
-                _LOGGER.error("Couldn't authenticate using the provided credentials!")
+                raise SonoffException("Couldn't authenticate using the provided credentials!")
 
             return
 
@@ -131,16 +122,7 @@ class Sonoff():
             self._wshost = resp['domain']
             _LOGGER.info("Found websocket address: %s", self._wshost)
         else:
-            raise Exception('No websocket domain')
-
-    def is_grace_period(self):
-        grace_time_elapsed = self._skipped_login * int(SCAN_INTERVAL.total_seconds()) 
-        grace_status = grace_time_elapsed < int(self._grace_period.total_seconds())
-
-        if grace_status:
-            self._skipped_login += 1
-
-        return grace_status
+            raise SonoffException('No websocket domain')
 
     def update_devices(self):
 
@@ -149,25 +131,12 @@ class Sonoff():
             return []
 
         # we are in the grace period, no updates to the devices
-        if self._skipped_login and self.is_grace_period():          
-            _LOGGER.info("Grace period active")            
-            return self._devices
-
         r = requests.get('https://{}-api.coolkit.cc:8080/api/user/device'.format(self._api_region), 
             headers=self._headers)
 
         resp = r.json()
         if 'error' in resp and resp['error'] in [HTTP_BAD_REQUEST, HTTP_UNAUTHORIZED]:
-            # @IMPROVE add maybe a service call / switch to deactivate sonoff component
-            if self.is_grace_period():
-                _LOGGER.warning("Grace period activated!")
-
-                # return the current (and possible old) state of devices
-                # in this period any change made with the mobile app (on/off) won't be shown in HA
-                return self._devices
-
-            _LOGGER.info("Re-login component")
-            self.do_login()
+            raise SonoffException(resp['error'])
 
         self._devices = r.json()
         return self._devices
@@ -227,17 +196,12 @@ class Sonoff():
                 self._ws = None
 
         return self._ws
-        
+
     def switch(self, new_state, deviceid, outlet):
         """Switch on or off."""
 
-        # we're in the grace period, no state change
-        if self._skipped_login:
-            _LOGGER.info("Grace period, no state change")
-            return (not new_state)
-
         self._ws = self._get_ws()
-        
+
         if not self._ws:
             _LOGGER.warning('invalid websocket, state cannot be changed')
             return (not new_state)
@@ -291,7 +255,7 @@ class Sonoff():
         self._ws.send(json.dumps(payload))
         wsresp = self._ws.recv()
         # _LOGGER.debug("switch socket: %s", wsresp)
-        
+
         self._ws.close() # no need to keep websocket open (for now)
         self._ws = None
 

@@ -8,25 +8,25 @@ fi
 
 case $1 in
   electrica)
-    cd $LAZE_PATH && ./girbot --run=plata_electrica
+    cd $LAZE_PATH/gitbot && ./girbot --run=plata_electrica
     break
     ;;
   eon)
-    cd $LAZE_PATH && ./girbot --run=plata_eon
+    cd $LAZE_PATH/girbot && ./girbot --run=plata_eon
     break
     ;;
   orange)
-    cd $LAZE_PATH && ./girbot --run=plata_orange
+    cd $LAZE_PATH/girbot && ./girbot --run=plata_orange
     break
     ;;
   upc)
-    cd $LAZE_PATH && ./girbot --run=plata_upc
+    cd $LAZE_PATH/girbot && ./girbot --run=plata_upc
     break
     ;;
   help)
-    cd $LAZE_PATH && ./girbot
+    cd $LAZE_PATH/girbot && ./girbot
     ;;
   *)
-    cd $LAZE_PATH && ./girbot
+    cd $LAZE_PATH/girbot && ./girbot
     ;;
 esac

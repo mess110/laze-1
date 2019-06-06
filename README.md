@@ -15,7 +15,7 @@ android application listens for received sms containing the confirmation
 codes and sends them to girbot.
 
 ```
-export LAZE_PATH="$HOME/laze-1/girbot"
+export LAZE_PATH="$HOME/laze-1"
 ```
 
 ### Button presser

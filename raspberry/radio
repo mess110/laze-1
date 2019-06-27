@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+killall -9 mplayer || echo 'mplayer was not running.' \
+  && mplayer -ao alsa -volume 50 $* \
+  </dev/null >/dev/null 2>&1 &

@@ -18,8 +18,16 @@ tts en 50 hello world
 
 ## ytmp
 
-Stream youtube videos with the [ytmp](/raspberry/ytmp) scripts.
+Stream youtube videos with the [ytmp](/raspberry/ytmp) script.
 
 ```
 ytmp https://www.youtube.com/watch?v=i9TdoO2OVaA
+```
+
+## radio
+
+Play raido with the [radio](/raspberry/radio) script.
+
+```
+radio 'http://80.86.106.143:9128/rockfm.aacp'
 ```

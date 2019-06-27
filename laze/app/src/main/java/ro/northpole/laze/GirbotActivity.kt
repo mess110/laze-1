@@ -27,7 +27,7 @@ class GirbotActivity : AppCompatActivity() {
 
         fun getGirbotEndpoint(context: Context): String {
             val prefs = getSettings(context)
-            return prefs.getString(MainActivity.girbotPrefKey, GirbotActivity.defaultGirbotEndpoint)
+            return prefs.getString(MainActivity.girbotPrefKey, defaultGirbotEndpoint)
         }
     }
 
@@ -62,15 +62,14 @@ class GirbotActivity : AppCompatActivity() {
         val allPermissions = ArrayList<String>()
         allPermissions.add(Manifest.permission.RECEIVE_SMS)
         allPermissions.add(Manifest.permission.INTERNET)
-        //allPermissions.add(Manifest.permission.RECORD_AUDIO)
 
-        allPermissions.forEach { it ->
+        allPermissions.forEach {
             if (ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(it)
             }
         }
 
-        if (!listPermissionsNeeded.isEmpty()) {
+        if (listPermissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toTypedArray(), 1)
             return false
         }

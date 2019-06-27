@@ -2,7 +2,7 @@
 
 A collection of automation things. It can:
 
-* [pay the bills (with sms confirmation code forwarding)](/girbot/README.md)
+* [pay the bills](/girbot/README.md) [(with sms confirmation code forwarding)](/laze/README.md)
 * [control the lights](/sonoff/README.md)
 * [talk using google tts](/README.md#tts)
 

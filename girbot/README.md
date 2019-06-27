@@ -31,3 +31,7 @@ ruby girbot.rb --ui --run plata_electrica
 
 Add `plata` to path and make sure you set `$LAZE_PATH` to the location of
 `laze-1` repo. See [README.md](/README.md) for more info.
+
+## Forward sms confirmation code
+
+[Read this](/laze/README.md)

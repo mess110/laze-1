@@ -12,7 +12,8 @@ class Config():
         self.api_region = 'eu'
         self.user_apikey = None
         self.bearer_token = None
-        self.aliases = []
+        self.aliases_raw = []
+        self.aliases = {}
 
 
     def load_aliases(self):
@@ -21,7 +22,20 @@ class Config():
 
         if path_exists:
             f = open(path, 'r')
-            self.aliases = f.read().split('\n')
+            self.aliases_raw = f.read().split('\n')
+
+        self.parse_aliases()
+
+
+    def parse_aliases(self):
+        for alias in self.aliases_raw:
+            aliases_array = alias.split(' ')
+            key = aliases_array.pop(0)
+            self.aliases[key] = {}
+
+            for combo in aliases_array:
+                item = combo.split(':')
+                self.aliases[key][item[0]] = item[1]
 
 
     def read_config(self):

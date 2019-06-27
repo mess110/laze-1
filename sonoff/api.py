@@ -1,6 +1,5 @@
 from sonoff import Sonoff, SonoffException
 
-import json
 
 class Api:
     def __init__(self, config):
@@ -24,6 +23,17 @@ class Api:
                 result.append(device)
 
         return result
+
+
+    def get_devices_by_alias(self, alias):
+        results = []
+
+        for key in self.config.aliases:
+            if key == alias:
+                for item in self.config.aliases[alias]:
+                    results.append(item)
+
+        return results
 
 
     def is_on(self, name):
@@ -52,7 +62,7 @@ class Api:
             self.sonoff.switch(on, device['deviceid'], None)
 
 
-    def to_json(self):
+    def info(self):
         results = []
         for device in self.get_devices():
             results.append({
@@ -60,7 +70,4 @@ class Api:
                 "on": self.is_on(device['name']),
                 "name": device['name'],
             })
-        print('[')
-        for result in results:
-            print("  %s," % json.dumps(result))
-        print(']')
+        return results

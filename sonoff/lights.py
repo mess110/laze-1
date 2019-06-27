@@ -4,7 +4,7 @@ import sys
 import json
 
 from api import Api
-from config import Config
+from config import Config, VERSION
 from sonoff import SonoffException
 
 config = Config()
@@ -12,7 +12,7 @@ config.read_config()
 config.load_aliases()
 
 def to_s(client):
-    print("")
+    print("Light states:\n")
     results = client.info()
     for result in results:
         print("  %s - %s" % (result['name'].ljust(10), result['on']))
@@ -23,6 +23,28 @@ def to_json(client):
     for result in results:
         print("  %s," % json.dumps(result))
     print(']')
+
+
+def help():
+    print("""lumina (v%s)- sonoff remote control
+
+Credentials are stored in ~/.sonoff-credentials , user/pass is not
+stured, instead we store tokens.
+Aliases can be found in ~/.sonoff-aliases and have the following format:
+
+alias_name switch_1_name:on switch_2_name:on switch_3_name:on
+
+Example usage:
+
+./lumina
+./lumina help
+./lumina json
+./lumina info
+./lumina switch_name
+./lumina switch_name:off
+./lumina switch_alias
+./lumina switch_alias:on
+""" % VERSION)
 
 
 try:
@@ -42,22 +64,7 @@ if len(sys.argv) == 2:
     elif cmd == 'json':
         to_json(client)
     elif cmd == 'help':
-        print("""lumina - sonoff remote control
-
-Aliases can be found in ~/.sonoff-aliases and have the following format:
-
-alias_name switch_1_name:on switch_2_name:on switch_3_name:on
-
-Example usage:
-
-./lumina
-./lumina help
-./lumina json
-./lumina info
-./lumina switch_name
-./lumina switch_name:off
-./lumina switch_alias
-""")
+        help()
     else:
         target_light = sys.argv[1]
 
@@ -102,4 +109,5 @@ Example usage:
                 print("%s is %s" % (alias, client.is_on(alias)))
 
 else:
+    help()
     to_s(client)

@@ -2,6 +2,8 @@ import os
 
 from getpass import getpass
 
+VERSION = '0.0.1'
+
 class Config():
     def __init__(self):
         self.config_path = '~/.sonoff-credentials'

@@ -1,12 +1,12 @@
 # api
 
-Simple http server which can issue commands
+Simple http server which can issue terminal commands
 
 ## cli
 
 ```
 ./cli
-./cli /hello?world=1
+./cli /?cmd=whoami
 ```
 
 ## Auto start the service

@@ -12,7 +12,7 @@ config.read_config()
 config.load_aliases()
 
 def to_s(client):
-    print("Light states:\n")
+    print("Light status:\n")
     results = client.info()
     for result in results:
         print("  %s - %s" % (result['name'].ljust(10), result['on']))
@@ -26,22 +26,25 @@ def to_json(client):
 
 
 def help():
-    print("""lumina (v%s)- sonoff remote control
+    print("""lumina (v%s) - control lights from terminal
+
+Read more: https://github.com/mess110/laze-1/tree/master/sonoff
 
 Credentials are stored in ~/.sonoff-credentials , user/pass is not
 stured, instead we store tokens.
-Aliases can be found in ~/.sonoff-aliases and have the following format:
+
+Aliases can be found in ~/.sonoff-aliases and should have the fallowing format:
 
 alias_1_name switch_1_name switch_2_name switch_3_name
 alias_2_name switch_1_name switch_2_name
 
 Example usage:
 
-./lumina help
-./lumina switch_name:off
-./lumina switch_alias:on
-./lumina info
-./lumina json
+  lumina help
+  lumina switch_name:off
+  lumina switch_alias:on
+  lumina info
+  lumina json
 """ % VERSION)
 
 
@@ -57,7 +60,7 @@ config.save_api_key_and_bearer(client.credentials())
 if len(sys.argv) == 2:
     cmd = sys.argv[1]
 
-    if cmd == 'info':
+    if cmd in ['status', 'info']:
         to_s(client)
     elif cmd == 'json':
         to_json(client)

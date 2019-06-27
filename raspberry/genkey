@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+if [ -z "$LAZE_PATH" ]
+then
+  echo "LAZE_PATH environment variable missing"
+  exit 1
+fi
+
+
+openssl req -nodes -new -x509 -keyout server.key -out server.cert

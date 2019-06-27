@@ -1,0 +1,5 @@
+# raspberry
+
+```
+./setup.sh
+```

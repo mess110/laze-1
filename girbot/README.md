@@ -34,4 +34,4 @@ Add `plata` to path and make sure you set `$LAZE_PATH` to the location of
 
 ## Forward sms confirmation code
 
-[Read this](/laze/README.md)
+[Read this](/laze/)

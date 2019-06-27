@@ -33,11 +33,7 @@ class Config():
         for alias in self.aliases_raw:
             aliases_array = alias.split(' ')
             key = aliases_array.pop(0)
-            self.aliases[key] = {}
-
-            for combo in aliases_array:
-                item = combo.split(':')
-                self.aliases[key][item[0]] = item[1]
+            self.aliases[key] = aliases_array
 
 
     def read_config(self):

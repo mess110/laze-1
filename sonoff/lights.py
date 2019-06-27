@@ -32,18 +32,16 @@ Credentials are stored in ~/.sonoff-credentials , user/pass is not
 stured, instead we store tokens.
 Aliases can be found in ~/.sonoff-aliases and have the following format:
 
-alias_name switch_1_name:on switch_2_name:on switch_3_name:on
+alias_1_name switch_1_name switch_2_name switch_3_name
+alias_2_name switch_1_name switch_2_name
 
 Example usage:
 
-./lumina
 ./lumina help
-./lumina json
-./lumina info
-./lumina switch_name
 ./lumina switch_name:off
-./lumina switch_alias
 ./lumina switch_alias:on
+./lumina info
+./lumina json
 """ % VERSION)
 
 
@@ -66,47 +64,26 @@ if len(sys.argv) == 2:
     elif cmd == 'help':
         help()
     else:
-        target_light = sys.argv[1]
+        vect2d = sys.argv[1].split(':')
 
-        # hold the switch_name:new_state combo
-        vect2d = target_light.split(':')
+        if len(vect2d) == 1:
+            print("Error: wrong format, needs: switch_name:new_state (on/off)")
+            sys.exit(1)
 
-        if len(vect2d) == 2:
-            target_light = vect2d[0]
+        target_light = vect2d[0]
+        new_state = vect2d[1]
+
+        if not new_state in ['on', 'off']:
+            print("Error: wrong format, needs: switch_name:new_state (on/off)")
+            sys.exit(2)
 
         target_devices = client.get_devices_by_alias(target_light)
+        for device in client.get_devices_by_name(target_light):
+            target_devices.append(device)
 
-        if len(target_devices) == 0:
-            # run a single command if no aliases found.
-            # we assume the target_light is a valid switch_name
-            if len(vect2d) == 1:
-                client.toggle(target_light)
-            else:
-                target_light = vect2d[0]
-                client.cmd(target_light, vect2d[1])
-            print("%s is %s" % (target_light, client.is_on(target_light)))
-        else:
-            # run a command per each alias found
-            for alias in target_devices:
-                vect2d_device = alias.split(':')
-                if len(vect2d) == 2:
-                    # alias specified override with :new_state
-                    client.cmd(vect2d_device[0], vect2d[1])
-                else:
-                    # use alias found in alias file or toggle
-                    if len(vect2d_device) == 1:
-                        # alias not specified state
-                        state = client.config.aliases[target_light][alias]
-                        if state is None or len(state) == 0:
-                            client.toggle(alias)
-                        else:
-                            client.cmd(alias, state)
-                    else:
-                        # if alias file specified state use that
-                        alias = vect2d_device[0]
-                        client.cmd(alias, vect2d_device[1])
-
-                print("%s is %s" % (alias, client.is_on(alias)))
+        for device in target_devices:
+            client.cmd(device, new_state)
+            print("%s is %s" % (device, client.is_on(device)))
 
 else:
     help()

@@ -1,0 +1,23 @@
+{
+    "auth": [
+        {
+            "name": "mobile",
+            "user": "email@email.com",
+            "pass": "password1"
+        },
+        {
+            "name": "utility_1",
+            "user": "email@email.com",
+            "pass": "password2"
+        },
+    ],
+    "cards": [
+        {
+            "ccv": "XXXX",
+            "expMonth": "X",
+            "expYear": "XXXX",
+            "name": "The name",
+            "number": "Only the numbers"
+        }
+    ]
+}

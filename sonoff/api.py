@@ -15,14 +15,12 @@ class Api:
         return self.sonoff.get_devices()
 
 
+    def get_devices_by_id(self, id):
+        return [x for x in self.get_devices() if x['deviceid'] == id]
+
+
     def get_devices_by_name(self, name):
-        result = []
-
-        for device in self.get_devices():
-            if device['name'] == name:
-                result.append(device)
-
-        return result
+        return [x for x in self.get_devices() if x['name'] == name]
 
 
     def get_devices_by_alias(self, alias):

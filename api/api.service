@@ -1,5 +1,5 @@
 [Unit]
-Description=laze-api
+Description=laze api
 After=network.target
 
 [Service]

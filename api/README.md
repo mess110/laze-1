@@ -1,24 +1,14 @@
-# gate
+# api
 
-Move `laze-music.service` to `/etc/systemd/system/laze-music.service`
+Simple http server which can issue commands
 
-Press a button from node.js using Arduino with the `firmata` protocol.
+## cli
 
-Add your user to the `dialout` group so you can connect to the Arduino. You will
-need to relog for the changes to take effect.
-
-```shell
-sudo usermod -a -G dialout yourUsername
-sudo reboot
+```
+./cli
+./cli /hello?world=1
 ```
 
-Print the [Universal "Button pusher" SG90](https://www.thingiverse.com/thing:2806324),
-connect the data line from the servo to pin **9**.
+## Auto start the service
 
-To trigger a press, run the `press` script. It handles mutex.
-
-```shell
-./press # default 90 140
-
-./press 0 90
-```
+Move `api.service` to `/etc/systemd/system/api.service`

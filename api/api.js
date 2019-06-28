@@ -3,7 +3,7 @@ const https = require('https')
 const url = require('url')
 const exec = require('child_process').exec
 
-const HTTPS = process.env.HTTPS
+const HTTPS = process.env.HTTPS === '1'
 const KEY_PATH = process.env.KEY_PATH || 'server.key'
 const CERT_PATH = process.env.CERT_PATH || 'server.cert'
 const PORT = process.env.PORT || 3000
@@ -38,7 +38,7 @@ const executeShowResponse = (cmd, response) => {
 
 const requestHandler = (request, response) => {
   const url_parts = url.parse(request.url, true)
-  if (request.headers.authorization !== TOKEN) {
+  if (request.headers.Authorization !== TOKEN) {
     response.writeHead(403)
     response.end(JSON.stringify({error: 'unauthorized', code: 403 }))
     return

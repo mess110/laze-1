@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]
+then
+  cat << EOF
+EOF
+  curl -H "Authorization: $TOKEN" -s "https://localhost:443/" | python -m json.tool
+  exit 0
+fi
+
+curl -H "Authorization: $TOKEN" -s "https://localhost:443$*" | python -m json.tool

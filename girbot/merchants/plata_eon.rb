@@ -23,8 +23,6 @@ class PlataEon < Girbot::Step
     # sleep 1000
 
     if amount_to_pay != 0
-      # goto 'https://myline-eon.ro/facturile-mele'
-
       browser.buttons.to_a[0].click
 
       sleep 5

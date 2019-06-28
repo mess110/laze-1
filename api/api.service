@@ -3,7 +3,11 @@ Description=laze api
 After=network.target
 
 [Service]
-Environment=NODE_PORT=3000
+Environment=PORT=3000
+Environment=HTTP=1
+Environment=KEY_PATH=/server.key
+Environment=CERT_PATH=/server.cert
+Environment=TOKEN=secret
 Type=simple
 User=pi
 ExecStart=/home/pi/.nvm/versions/node/v8.11.1/bin/node /home/pi/laze-1/api/api.js

@@ -7,6 +7,7 @@ A collection of automation things. It can:
 * [talk using google tts](/raspberry/#tts)
 * [raspberry pi stuff](/raspberry)
 * [arduino stuff](/arduino)
+* [issue terminal commands thought http/https](/api)
 
 ## Basic setup
 

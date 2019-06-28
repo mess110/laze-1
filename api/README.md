@@ -1,8 +1,11 @@
 # api
 
-Simple http server which can issue terminal commands
+Simple http/https server which can issue terminal commands
 
 ## setup
+
+Authentitaion is based on a secret token. Don't share it with anybody and use
+https.
 
 ```
 TOKEN=secret node api.js
@@ -19,6 +22,7 @@ HTTPS=1 KEY_PATH=... CERT_PATH=... PORT=443 TOKEN=secret node api.js
 ```
 ./cli
 ./cli /?cmd=whoami
+./scli /?cmd=whoami // for https
 ```
 
 ## Auto start the service

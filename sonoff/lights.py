@@ -80,13 +80,13 @@ if len(sys.argv) == 2:
             print("Error: wrong format, needs: switch_name:new_state (on/off)")
             sys.exit(2)
 
-        target_devices = client.get_devices_by_alias(target_light)
+        target_devices = client.get_device_names_by_alias(target_light)
         for device in client.get_devices_by_name(target_light):
-            target_devices.append(device)
+            target_devices.append(device['name'])
 
         for device in target_devices:
             client.cmd(device, new_state)
-            print("%s is %s" % (device, client.is_on(device)))
+            print("%s is now %s" % (device, client.is_on(device)))
 
 else:
     help()

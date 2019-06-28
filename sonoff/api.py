@@ -23,7 +23,7 @@ class Api:
         return [x for x in self.get_devices() if x['name'] == name]
 
 
-    def get_devices_by_alias(self, alias):
+    def get_device_names_by_alias(self, alias):
         results = []
 
         for key in self.config.aliases:

@@ -56,9 +56,11 @@ class Config():
         path = os.path.expanduser(self.config_path)
         path_exists = os.path.isfile(path)
 
-        if not path_exists:
-            user_apikey, bearer_token = credentials
+        if path_exists:
+            return
 
-            f = open(path, 'w')
-            f.write("%s\n%s" % (user_apikey, bearer_token))
-            f.close()
+        user_apikey, bearer_token = credentials
+
+        f = open(path, 'w')
+        f.write("%s\n%s" % (user_apikey, bearer_token))
+        f.close()

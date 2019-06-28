@@ -11,18 +11,16 @@ config = Config()
 config.read_config()
 config.load_aliases()
 
+
+def print_json(obj):
+    print(json.dumps(obj))
+
+
 def to_s(client):
     print("Light status:\n")
     results = client.info()
     for result in results:
         print("  %s - %s" % (result['name'].ljust(10), result['on']))
-
-def to_json(client):
-    results = client.info()
-    print('[')
-    for result in results:
-        print("  %s," % json.dumps(result))
-    print(']')
 
 
 def help():
@@ -40,10 +38,9 @@ alias_2_name switch_1_name switch_2_name
 
 Example usage:
 
-  lumina help
   lumina switch_name:off
   lumina switch_alias:on
-  lumina info
+
   lumina json
 """ % VERSION)
 
@@ -51,33 +48,29 @@ Example usage:
 try:
     client = Api(config)
 except SonoffException as e:
-    print(e)
+    print_json({'message': str(e)})
     sys.exit(1)
 
 config.save_api_key_and_bearer(client.credentials())
 
-
 if len(sys.argv) == 2:
     cmd = sys.argv[1]
 
-    if cmd in ['status', 'info']:
-        to_s(client)
-    elif cmd == 'json':
-        to_json(client)
-    elif cmd == 'help':
-        help()
+    if cmd == 'json':
+        info = client.info()
+        print_json(info)
     else:
-        vect2d = sys.argv[1].split(':')
+        vect2d = cmd.split(':')
 
         if len(vect2d) == 1:
-            print("Error: wrong format, needs: switch_name:new_state (on/off)")
+            print_json({'message': "Error: wrong format, needs: switch_name:new_state (on/off)"})
             sys.exit(1)
 
         target_light = vect2d[0]
         new_state = vect2d[1]
 
         if not new_state in ['on', 'off']:
-            print("Error: wrong format, needs: switch_name:new_state (on/off)")
+            print_json({'message': "Error: wrong format, needs: switch_name:new_state (on/off)"})
             sys.exit(2)
 
         target_devices = client.get_device_names_by_alias(target_light)
@@ -86,8 +79,8 @@ if len(sys.argv) == 2:
 
         for device in target_devices:
             client.cmd(device, new_state)
-            print("%s is now %s" % (device, client.is_on(device)))
-
+            current_state = 'on' if client.is_on(device) else 'off'
+            print_json({'message': "%s is now %s" % (device, current_state)})
 else:
     help()
     to_s(client)

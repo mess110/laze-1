@@ -12,7 +12,7 @@ class Api:
 
 
     def get_devices(self):
-        return self.sonoff.get_devices()
+        return sorted(self.sonoff.get_devices(), key=lambda x: x['name'])
 
 
     def get_devices_by_id(self, id):

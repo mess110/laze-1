@@ -6,4 +6,20 @@ canvas#vrum-dom {
   width: 100%;
   height: 100%;
   touch-action: none; /* needed to prevent default for virtualjoystick */
+  /* z-index: 10000; */
+}
+
+canvas {
+  /* z-index: 10001; */
+}
+
+.controls {
+  position: absolute;
+  padding: 10px;
+  left: 0px;
+  top: 0px;
+  cursor: pointer;
+  display: none;
+  /* z-index: 10002; */
+  pointer-events: none;
 }

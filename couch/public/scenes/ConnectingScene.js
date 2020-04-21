@@ -16,8 +16,23 @@ class ConnectingScene extends Scene {
     text.position.set(0, -0.5, 6)
     text.lookAt(Hodler.get('camera').position)
     this.add(text)
+    this.text = text;
 
     socket = io(window.location.host)
-    Engine.switch(gamepad1ButtonScene)
+    socket.on('connect', () => {
+      Hodler.get('scene').setText('connected')
+      Engine.switch(gamepad1ButtonScene)
+    })
+
+    socket.on('connect_error', (err) => {
+      Hodler.get('scene').setText('connection error')
+    })
+    socket.on('connect_timeout', (err) => {
+      Hodler.get('scene').setText('connection timeout')
+    })
+  }
+
+  setText(s) {
+    this.text.setText(s)
   }
 }

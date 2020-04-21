@@ -10,13 +10,16 @@
     </head>
     <link rel="stylesheet" href="style.css" type="text/css">
     <body>
+        <div class="controls">✨</div>
         <!-- <script src="/src/tools/dependencies.dev.js"></script> -->
         <script src="/socket.io/socket.io.js"></script>
         <script src="/vrum.min.js"></script>
         <script>
             loadVrumScripts([
+                'scenes/BaseScene.js',
                 'scenes/ConnectingScene.js',
                 'scenes/Gamepad1ButtonScene.js',
+                'scenes/KeyboardScene.js',
                 'main.js',
             ])
         </script>

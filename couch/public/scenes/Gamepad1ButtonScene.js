@@ -1,10 +1,6 @@
-class Gamepad1ButtonScene extends Scene {
+class Gamepad1ButtonScene extends BaseScene {
   init(options) {
-    let camera = Hodler.get('camera')
-    camera.position.set(0, 4, 10)
-    camera.lookAt(new THREE.Vector3(0,0,0))
-
-    this.add(new THREE.AmbientLight(0xffffff))
+    super.init(options)
 
     let text = new BaseText({
       text: 'joystick', fillStyle: 'white',
@@ -60,8 +56,8 @@ class Gamepad1ButtonScene extends Scene {
       let joystick = this.vc.joystickLeft
       socket.emit('action', {
         type: 'mousemove',
-        dX: joystick.deltaX(),
-        dY: joystick.deltaY(),
+        dX: joystick.deltaX() / 10,
+        dY: joystick.deltaY() / 10,
         direction: (joystick.right()? 'right': '') + (joystick.up()? 'up': '') + (joystick.down()? 'down': '') + (joystick.left()? 'left': ''),
       })
     }

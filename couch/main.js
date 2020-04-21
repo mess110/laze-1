@@ -14,11 +14,13 @@ io.on('connection', (socket) => {
     let action = data.type;
     switch (action) {
       case 'click':
-        robot.mouseToggle(data.direction);
+        if (['up', 'down'].includes(data.direction)) {
+          robot.mouseToggle(data.direction);
+        }
         break;
       case 'mousemove':
         let pos = robot.getMousePos();
-        robot.moveMouse(data.dX / 10 + pos.x, data.dY / 10 + pos.y);
+        robot.moveMouse(data.dX + pos.x, data.dY + pos.y);
         break;
       default:
         console.log(`unkown action ${action}`);

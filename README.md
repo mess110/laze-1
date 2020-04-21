@@ -3,6 +3,7 @@
 A collection of automation things. It can:
 
 * [pay the bills](/girbot) [(with sms confirmation code forwarding)](/laze)
+* [control mouse](/couch)
 * [control the lights](/sonoff)
 * [talk using google tts](/raspberry/#tts)
 * [raspberry pi stuff](/raspberry)

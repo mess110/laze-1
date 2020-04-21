@@ -1,4 +1,4 @@
-from sonoff import Sonoff, SonoffException
+from .sonoff import Sonoff, SonoffException
 
 
 class Api:

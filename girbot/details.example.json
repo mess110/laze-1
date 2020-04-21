@@ -1,23 +1,21 @@
 {
-    "auth": [
-        {
-            "name": "mobile",
+    "auth": {
+        "mobile": {
             "user": "email@email.com",
             "pass": "password1"
         },
-        {
-            "name": "utility_1",
+        "utility": {
             "user": "email@email.com",
             "pass": "password2"
-        },
-    ],
-    "cards": [
-        {
+        }
+    },
+    "cards": {
+        "main": {
+            "name": "The name",
+            "number": "Only the numbers",
             "ccv": "XXXX",
             "expMonth": "X",
-            "expYear": "XXXX",
-            "name": "The name",
-            "number": "Only the numbers"
+            "expYear": "XXXX"
         }
-    ]
+    }
 }

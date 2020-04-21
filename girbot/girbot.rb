@@ -98,32 +98,32 @@ when 'plata_eon'
   PlataEon.new(nil).action(
     options: options,
     details: {
-      auth: details[:auth][0],
-      card: details[:cards][0]
+      auth: details[:auth][:eon],
+      card: details[:cards][:main]
     }
   )
 when 'plata_electrica'
   PlataElectrica.new(nil).action(
     options: options,
     details: {
-      auth: details[:auth][1],
-      card: details[:cards][0]
+      auth: details[:auth][:electrica],
+      card: details[:cards][:main]
     }
   )
 when 'plata_orange'
   PlataOrange.new(nil).action(
     options: options,
     details: {
-      auth: details[:auth][3],
-      card: details[:cards][0]
+      auth: details[:auth][:orange],
+      card: details[:cards][:main]
     }
   )
 when 'plata_upc'
   PlataUpc.new(nil).action(
     options: options,
     details: {
-      auth: details[:auth][2],
-      card: details[:cards][0]
+      auth: details[:auth][:upc],
+      card: details[:cards][:main]
     }
   )
 when 'sandbox'

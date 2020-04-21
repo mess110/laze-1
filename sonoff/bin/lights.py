@@ -2,10 +2,12 @@
 
 import sys
 import json
+import os
 
-from api import Api
-from config import Config, VERSION
-from sonoff import SonoffException
+dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..')
+sys.path.append(dir_path)
+
+from lib import Api, Config, VERSION, SonoffException
 
 config = Config()
 config.read_config()
@@ -62,20 +64,21 @@ if len(sys.argv) == 2:
     else:
         vect2d = cmd.split(':')
 
-        if len(vect2d) == 1:
-            print_json({'message': "Error: wrong format, needs: switch_name:new_state (on/off)"})
-            sys.exit(1)
-
         target_light = vect2d[0]
-        new_state = vect2d[1]
-
-        if not new_state in ['on', 'off']:
-            print_json({'message': "Error: wrong format, needs: switch_name:new_state (on/off)"})
-            sys.exit(2)
 
         target_devices = client.get_device_names_by_alias(target_light)
         for device in client.get_devices_by_name(target_light):
             target_devices.append(device['name'])
+
+        is_on = False
+        for device in target_devices:
+            if client.is_on(device):
+                is_on = True
+        new_state = vect2d[1] if len(vect2d) == 2 else not is_on
+
+        if not new_state in ['on', 'off', True, False]:
+            print_json({'message': "Error: wrong format, needs: switch_name:new_state (on/off)"})
+            sys.exit(1)
 
         for device in target_devices:
             client.cmd(device, new_state)

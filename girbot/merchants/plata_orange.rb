@@ -1,5 +1,6 @@
 class PlataOrange < Girbot::Step
   def action options = {}
+    # $logger.info(options)
     auth = validate_auth(options)
     card = validate_card(options)
 
@@ -7,13 +8,12 @@ class PlataOrange < Girbot::Step
     text_in_textfield(auth[:user], id: 'login')
     text_in_textfield(auth[:pass], id: 'password')
 
-    click(:button, type: 'submit')
-    # text_in_textfield(auth[:user], id: 'login')
-    # text_in_textfield(auth[:pass], id: 'password')
-    # sleep 120
-    # click(:button, type: 'submit')
+    click(:button, class: 'orange-btn')
+    sleep 10
 
     goto 'https://www.orange.ro/myaccount/invoice/payment-step-one'
+
+    sleep 10
 
     raw_label = browser.span(css: '#panelMiddle790 > div.careenvelope1 > div.widthpb.float > div > table > tbody > tr:nth-child(1) > td:nth-child(2) > strong > span').text
     amount_to_pay = raw_label.split[0].gsub(',', '.').to_f

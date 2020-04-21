@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+if [ -z "$LAZE_PATH" ]
+then
+  echo "LAZE_PATH environment variable missing"
+  exit 1
+fi
+
+cd $LAZE_PATH/couch && npm start

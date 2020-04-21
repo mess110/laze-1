@@ -1,5 +1,6 @@
 // Config.instance.window.showStatsOnStart = true
 // Config.instance.engine.debug = true
+Config.instance.fade.duration = 200
 Utils.orientation('landscape')
 
 let socket = null

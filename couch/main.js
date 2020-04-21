@@ -1,5 +1,5 @@
 let express = require('express')
-let robot = require("robotjs")
+let robot = require('robotjs')
 
 let app = express()
 let http = require('http').createServer(app)
@@ -11,10 +11,10 @@ io.on('connection', (socket) => {
   console.log('a user connected')
 
   socket.on('action', function (data) {
+    console.log(data);
     let action = data.type
     switch (action) {
       case 'button':
-        console.log(data)
         robot.keyTap(data.which)
         break
       case 'click':
@@ -32,6 +32,14 @@ io.on('connection', (socket) => {
   })
 })
 
-http.listen(3000, () => {
-  console.log('listening on *:3000')
+const { networkInterfaces } = require('os')
+const getLocalExternalIP = () => [].concat(...Object.values(networkInterfaces()))
+  .filter(details => details.family === 'IPv4' && !details.internal)
+  .pop().address
+
+const port = 3000;
+
+http.listen(port, () => {
+  console.log(`Listening *:${port}`)
+  console.log(`Web UI: http://${getLocalExternalIP()}:${port}\n`)
 })

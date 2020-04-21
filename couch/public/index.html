@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+
+        <link rel="icon" href="/assets/favicon.ico">
+
+        <title>couch controller - vrum.js</title>
+    </head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <body>
+        <!-- <script src="/src/tools/dependencies.dev.js"></script> -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/vrum.min.js"></script>
+        <script>
+            loadVrumScripts([
+                'scenes/ConnectingScene.js',
+                'scenes/Gamepad1ButtonScene.js',
+                'main.js',
+            ])
+        </script>
+    </body>
+</html>
